@@ -22,9 +22,7 @@
     "passport-github": "^1.1.0",
     "react": "^15.4.1",
     "react-bootstrap": "^0.30.7",
-    "react-dom": "^15.4.1"
-  },
-  "devDependencies": {
+    "react-dom": "^15.4.1",
     "autoprefixer": "^6.6.1",
     "babel": "^6.5.2",
     "babel-cli": "^6.18.0",
