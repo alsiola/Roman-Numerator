@@ -1,10 +1,14 @@
 import React from 'react';
-import styles from './App.css';
+import {Grid, PageHeader} from 'react-bootstrap';
+import RomanNumerator from './Components/RomanNumerator';
 
 export default class App extends React.Component {
     render() {
         return (
-            <div className={styles.yellow}>This is a react app.</div>
+            <Grid>
+                <PageHeader>Roman Numerator <small>An app by Alex Young</small></PageHeader>
+                <RomanNumerator />
+            </Grid>
         );
     }
 }

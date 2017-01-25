@@ -1,30 +1,23 @@
 var path = require('path');
-var fs = require('fs');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var autoprefixer = require('autoprefixer');
 var webpack = require('webpack');
 
 process.env.NODE_ENV = 'production';
 
 module.exports = {
-    entry: './src/client/js/index.js',
+    entry: ['./src/client/js/index.js', './src/client/css/app.scss'],
     output: {
         filename: 'bundle.js',
         path: path.join(__dirname, '../build'),
         publicPath: '/'
     },
     module: {
-        preloaders: [
-            {
-                test: /\.(js|jsx)$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: 'eslint'
-            }
-        ],
         loaders: [
             {
                 test: /\.(js|jsx)$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: {
                     presets: ['es2015', 'react']
@@ -32,13 +25,18 @@ module.exports = {
             },
             {
                 test:/\.s?css$/,
-                loaders: ["style-loader", "css-loader?modules", "sass-loader", "postcss-loader"]
+                loader: ExtractTextPlugin.extract(["css-loader?importLoaders=1", "postcss-loader", "sass-loader"])
             }
         ]
     },
     plugins: [
+        new webpack.DefinePlugin({
+             'process.env': {
+                NODE_ENV: JSON.stringify('production')
+              }
+        }),
         new HtmlWebpackPlugin({
-            template: './src/client/index.html',
+            template: './src/client/html/index.html',
             minify: {
                 removeComments: true,
                 collapseWhitespace: true,
@@ -52,6 +50,7 @@ module.exports = {
                 minifyURLs: true
             }
         }),
+        new ExtractTextPlugin("styles.css"),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
@@ -77,5 +76,8 @@ module.exports = {
           'not ie < 9'
         ]
       })
-    ]
+    ],
+    sassLoader: {
+        includePaths: ['./node_modules']
+    }
 }

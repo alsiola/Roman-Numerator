@@ -1,8 +1,6 @@
-var path = require('path');
-var fs = require('fs');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var autoprefixer = require('autoprefixer');
 var webpack = require('webpack');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     debug:true,
@@ -10,24 +8,17 @@ module.exports = {
     devServer: {
         inline: true
     },
-    entry: './src/client/js/index.js',
+    entry: ['./src/client/js/index.js', require.resolve('react-dev-utils/webpackHotDevClient'), './src/client/css/app.scss'],
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, '/'),
+        path: '/',
         publicPath: '/'
     },
     module: {
-        preloaders: [
-            {
-                test: /\.(js|jsx)$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: 'eslint'
-            }
-        ],
         loaders: [
             {
                 test: /\.(js|jsx)$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: {
                     presets: ['es2015', 'react']
@@ -35,24 +26,15 @@ module.exports = {
             },
             {
                 test:/\.s?css$/,
-                loaders: ["style-loader", "css-loader?modules", "sass-loader", "postcss-loader"]
+                loader: ExtractTextPlugin.extract(["css-loader?importLoaders=1&sourceMap=inline", "sass-loader?sourceMap=inline"])
             }
         ]
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/client/index.html'
+            template: './src/client/html/index.html'
         }),
+        new ExtractTextPlugin("styles.css"),
         new webpack.HotModuleReplacementPlugin()
-    ],
-    postcss: () => [
-      autoprefixer({
-        browsers: [
-          '>1%',
-          'last 4 versions',
-          'Firefox ESR',
-          'not ie < 9'
-        ]
-      }),
     ]
 }

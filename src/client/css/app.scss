@@ -1,0 +1,10 @@
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css');
+
+.big {
+    text-align:center;
+    font-size: 2rem;
+
+    @media (min-width: 600px) {
+        font-size: 3rem;
+    }
+}

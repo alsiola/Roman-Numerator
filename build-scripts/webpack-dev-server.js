@@ -47,6 +47,9 @@ compiler.plugin('done', stats => {
 
 
 const server = new webpackDevServer(compiler, {
+    publicPath: '/',
+    contentBase: './',
+    clientLogLevel: 'info',
     hot: true,
     historyApiFallback: true,
     quiet: true,
